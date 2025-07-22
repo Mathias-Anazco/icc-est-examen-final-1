@@ -4,11 +4,31 @@ import java.util.Set;
 import java.util.Stack;
 
 import controllers.MaquinaController;
+import javax.sound.sampled.SourceDataLine;
 import models.Maquina;
 
 public class App {
     public static void main(String[] args) throws Exception {
         List<Maquina> maquinas = crearMaquinas();
+        MaquinaController controller = new MaquinaController();
+        System.out.println("Metodo A - filtrarPorSubred > 100");
+        Stack<Maquina> pila = controller.filtrarPorSubred(maquinas, 100);
+        System.out.println(pila);
+
+        System.out.println("\n Metodo B - ordenarPorSubred:");
+        Set<Maquina> ordenado = controller.oprdenadoPorSubred(pila);
+        System.out.println(ordenado);
+
+        System.out.println("\n Metodo C - ordenarPorRiesgo: ");
+        Map<Integer, Queue<Maquina>> mapa = controller.agruparPorRiesgo(maquinas);
+        mapa.forEach((riesgo, cola)) -> {
+            System.out.println("Riesgo " + riesgo + "->" + cola);
+        }
+
+        System.out.println("\n Metodo D - explorarGrupo: ");
+        Map<Maquina> groupMayor = controller.explorarGrupo(mapa);
+        System.out.println(groupMayor);
+        
 
     }
 
@@ -67,5 +87,7 @@ public class App {
                 new Maquina("DB13", "71.248.50.86", Arrays.asList(17, 11, 12)));
         return maquinas;
 
+
     }
+    
 }
